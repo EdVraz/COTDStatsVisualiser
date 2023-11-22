@@ -36,8 +36,3 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           files: |
             /home/runner/work/COTDStatsVisualiser/COTDStatsVisualiser/dist/COTDStatsVisualiser.exe
-#        run: >-
-#          "gh release create ${{ github.ref_name }}
-#          ./dist/COTDStatsVisualiser.exe
-#          --generate-notes
-#          --title "${{ github.ref_name }}""

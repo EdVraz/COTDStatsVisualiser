@@ -33,4 +33,4 @@ jobs:
           prerelease: false
           token: ${{ secrets.GH_TOKEN }}
           files: |
-            ./dist/COTDStatsVisualiser.exe
+            /home/runner/work/COTDStatsVisualiser/COTDStatsVisualiser/dist/COTDStatsVisualiser.exe
