@@ -30,7 +30,7 @@ def get_full_cotd_data_and_save(player_name: str, force_refetch: bool = False) -
 
     data = parse_data(cotd_data)
     plot = generate_plot(data, player_name)
-    plot.show()
+    plot.show()  # FIXME: make this wait for the user to close the plot
 
 
 def main(argv: list[str] | None = None) -> None:

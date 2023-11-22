@@ -5,6 +5,7 @@ from typing import Any
 import matplotlib.pyplot as plt  # type: ignore[import]
 import pandas as pd
 import requests
+from matplotlib import ticker as pltticker
 from ratelimiter import RateLimiter  # type: ignore[import]
 
 from .const import API_URL, headers
@@ -93,29 +94,59 @@ def parse_data(data: list[dict[str, Any]]) -> pd.DataFrame:
     df["qualificationrank"] = df["qualificationrank"].astype(int)
     df["totalplayers"] = df["totalplayers"].astype(int)
 
-    df["top %"] = (64 * (df["divrank"] - 1) + df["qualificationrank"]) / df["totalplayers"]
+    # TODO add options:
+    #   - rolling average (amount of days)
+    #   - amount of data points (1 per day, 1 per week, 1 per month, ...)
+    #   - x axis range (1 month, 5 month, all, ...)
+    #   - y axis range (0-50, 0-100, ...)
 
-    # FIXME pretty sure this is wrong, but for now we just push to gh
-    #   and make everything work, tmrw when we have more information by the person
-    #   who sent me the math
+    # also ignore this below its just fucked, but we keep whole month average for alpha.2
 
-    # print(df["top %"])
-    # print(df["divrank"])
-    # print(df["qualificationrank"])
-    # print(df["totalplayers"])
+    d = {
+        "months": sorted(
+            list({f"{date.year}-{date.month}" for date in df["date"]}),
+            key=lambda x: int(x.replace("-", "_")),
+        ),
+    }
+    d["average div"] = [[] for _ in range(len(d["months"]))]  # type: ignore[misc]
+    d["average top %"] = [[] for _ in range(len(d["months"]))]  # type: ignore[misc]
 
-    df["avg div"] = df["div"].rolling(30).mean()
+    graph_data = pd.DataFrame(d)
 
-    return df
+    for pos, date in enumerate(df["date"]):
+        month_string = f"{date.year}-{date.month}"
+        curr_pos = d["months"].index(month_string)
+        graph_data["average div"][curr_pos].append(df["div"][pos])
+        graph_data["average top %"][curr_pos].append(
+            (64 * (df["div"][pos] - 1) + df["qualificationrank"][pos]) / df["totalplayers"][pos]
+        )
+
+        # FIXME average top % broken.
+
+    graph_data["months"] = graph_data["months"].astype(str)
+    graph_data["average div"] = graph_data["average div"].apply(lambda x: sum(x) / len(x))
+    graph_data["average top %"] = graph_data["average top %"].apply(lambda x: sum(x) / len(x))
+    # df["top %"] = (64 * (df["div"] - 1) + df["qualificationrank"]) / df["totalplayers"]
+
+    return graph_data
 
 
 def generate_plot(data: pd.DataFrame, player_name: str) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(16, 9))
-    ax.plot(data["date"], data["avg div"], label="Avg Div")
-    ax.plot(data["date"], data["top %"], label="Avg top%")
+    ax.plot(data["months"], data["average div"], label="Avg Div")
+    ax.plot(data["months"], data["average top %"], label="Avg top%")
+
     ax.set_title(f"COTD results {player_name}")
     ax.set_xlabel("Date")
-    ax.set_ylabel("Top %")
+    ax.set_ylabel("Div/Top %")
+
+    # FIXME figure out how to have less x axis ticks than there is data points
+
+    ax.set_ylim([0, 50])  # TODO make this configurable
+
+    loc = pltticker.MultipleLocator(base=2.0)  # TODO make this configurable
+    ax.xaxis.set_major_locator(loc)
+
     ax.legend()
 
     return fig
