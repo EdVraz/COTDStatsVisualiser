@@ -33,6 +33,7 @@ jobs:
           path: ./dist/COTDStatsVisualiser.exe
 
   create-release:
+    needs: build-exe
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,6 +52,6 @@ jobs:
             COTDStatsVisualiser.exe
 
       - name: Delete Artifact
-        uses: actions/delete-artifact@v2
+        uses: geekyeggo/delete-artifact@v2
         with:
           name: COTDStatsVisualiser.exe
