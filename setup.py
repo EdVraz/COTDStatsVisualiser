@@ -1,0 +1,22 @@
+from pathlib import Path
+
+from setuptools import find_packages, setup  # type: ignore[import]
+
+extras_require = {"GUI": ["imgui[full]"]}
+
+setup(
+    name="cotd-stats-visualiser",
+    description="A script that generates a visualisation of the Trackmania COTD stats for a given player.",
+    long_description=(Path(__file__).parent / "README.md").read_text(),
+    long_description_content_type="text/markdown",
+    author="EdVraz",
+    author_email="edvraz12@gmail.com",
+    url="https://github.com/EdVraz/COTDStatsVisualiser",
+    version="0.0.0-alpha.1",
+    packages=find_packages(),
+    include_package_data=True,
+    python_requires=">=3.10",
+    install_requires=(Path(__file__).parent / "requirements.txt").read_text().splitlines(),
+    license="LICENSE"
+    # extras_require=extras_require,
+)

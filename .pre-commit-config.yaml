@@ -62,4 +62,4 @@ repos:
         language: python
         types: [file, python]
         args: [--config-file, mypy.ini,]
-exclude: .md|exercise-02/|exercise-03/|.gitignore|(?:test|game)_snake\.py
+        additional_dependencies: [types-requests,pandas-stubs]
