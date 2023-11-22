@@ -3,7 +3,7 @@ name: Create Release
 on:
   push:
     tags:
-      - "v[0-100].[0-100].[0-100].*"
+      - "v[0-100].[0-100].[0-100]-*"
 
 jobs:
   build:
