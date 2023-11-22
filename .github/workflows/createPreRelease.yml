@@ -5,6 +5,11 @@ on:
     tags:
       - "v[0-100].[0-100].[0-100]-*"
 
+
+permissions:
+  contents: write
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
