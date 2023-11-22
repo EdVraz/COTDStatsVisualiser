@@ -1,9 +1,6 @@
 name: Publish to PyPI
 
 on:
-  push: # temp until it works
-    branches:
-      - main
   release:
     types:
       - published
