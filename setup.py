@@ -12,7 +12,7 @@ setup(
     author="EdVraz",
     author_email="edvraz12@gmail.com",
     url="https://github.com/EdVraz/COTDStatsVisualiser",
-    version="0.0.0-alpha.1",
+    version="0.0.1-alpha.1",
     packages=find_packages(),
     include_package_data=True,
     python_requires=">=3.10",
