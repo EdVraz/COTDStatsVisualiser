@@ -134,7 +134,8 @@ def parse_data(data: list[dict[str, Any]]) -> pd.DataFrame:
 def generate_plot(data: pd.DataFrame, player_name: str) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(16, 9))
     ax.plot(data["months"], data["average div"], label="Avg Div")
-    ax.plot(data["months"], data["average top %"], label="Avg top%")
+    # ax.plot(data["months"], data["average top %"], label="Avg top%")
+    # not plotting this for now, it's broken
 
     ax.set_title(f"COTD results {player_name}")
     ax.set_xlabel("Date")
