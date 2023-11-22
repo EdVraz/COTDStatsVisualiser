@@ -28,5 +28,6 @@ jobs:
         with:
           generate_release_notes: true
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             ./dist/COTDStatsVisualiser.exe
