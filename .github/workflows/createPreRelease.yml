@@ -26,6 +26,7 @@ jobs:
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
+          generate_release_notes: true
           prerelease: true
           files: |
             ./dist/COTDStatsVisualiser.exe

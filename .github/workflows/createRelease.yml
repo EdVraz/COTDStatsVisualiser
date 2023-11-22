@@ -25,7 +25,8 @@ jobs:
           pyinstaller --onefile ./to_exe.py --name COTDStatsVisualiser.exe
       - name: Publish Release
         uses: softprops/action-gh-release@v1
-        prerelease: false
         with:
+          generate_release_notes: true
+          prerelease: false
           files: |
             ./dist/COTDStatsVisualiser.exe
